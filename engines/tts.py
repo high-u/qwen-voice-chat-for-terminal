@@ -3,11 +3,11 @@ from qwen_tts import Qwen3TTSModel
 
 
 class QwenTTS:
-    def __init__(self):
+    def __init__(self, device_map="auto"):
         self.model = Qwen3TTSModel.from_pretrained(
             "Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice",
             trust_remote_code=True,
-            device_map="auto"
+            device_map=device_map
         )
 
     def synthesize(

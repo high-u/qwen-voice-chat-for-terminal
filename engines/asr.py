@@ -3,11 +3,11 @@ from qwen_asr import Qwen3ASRModel
 
 
 class QwenASR:
-    def __init__(self):
+    def __init__(self, device_map="auto"):
         self.model = Qwen3ASRModel.from_pretrained(
             "Qwen/Qwen3-ASR-0.6B",
             trust_remote_code=True,
-            device_map="auto"
+            device_map=device_map
         )
 
     def transcribe(self, audio: np.ndarray, sr: int = 16000, language: str = "Japanese") -> str:

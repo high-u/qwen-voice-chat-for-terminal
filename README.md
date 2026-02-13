@@ -38,3 +38,15 @@ python main.py
 
 1. Enter キー押下で、ユーザープロンプトの録音開始。
 2. Enter キー押下で、ユーザープロンプトの録音終了。
+
+## それぞれの検証
+
+```bash
+# GPU モード
+python test_asr.py --mode gpu
+python test_tts.py --mode gpu
+
+# CPU オフロードモード
+python test_asr.py --mode cpu-offload
+python test_tts.py --mode cpu-offload
+```

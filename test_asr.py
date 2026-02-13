@@ -1,5 +1,7 @@
 import sounddevice as sd
 import numpy as np
+import time
+import argparse
 from engines import QwenASR
 
 
@@ -26,8 +28,19 @@ def record_audio(fs=16000):
 
 
 def main():
-    print("Initializing QwenASR...")
-    asr = QwenASR()
+    parser = argparse.ArgumentParser(description="Test QwenASR with GPU or CPU-offload")
+    parser.add_argument("--mode", choices=["gpu", "cpu-offload"], default="gpu",
+                        help="Execution mode: gpu (default) or cpu-offload")
+    args = parser.parse_args()
+
+    # モードに応じて設定
+    if args.mode == "gpu":
+        device_map = "cuda"
+    else:  # cpu
+        device_map = "cpu"
+
+    print(f"Initializing QwenASR (mode: {args.mode})...")
+    asr = QwenASR(device_map=device_map)
 
     while True:
         try:
@@ -38,9 +51,11 @@ def main():
                 continue
 
             print("Transcribing with Qwen3-ASR...")
+            start = time.time()
             text = asr.transcribe(audio)
+            elapsed = time.time() - start
 
-            print("\n--- ASR Result ---")
+            print(f"\n--- ASR Result (time: {elapsed:.3f}s) ---")
             print(text)
             print("------------------\n")
 
