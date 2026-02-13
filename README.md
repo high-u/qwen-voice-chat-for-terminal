@@ -33,7 +33,7 @@ source .venv/bin/activate
 ## 使用方法
 
 ```bash
-python main.py
+python main.py --voice my_voice
 ```
 
 1. Enter キー押下で、ユーザープロンプトの録音開始。
@@ -50,3 +50,26 @@ python test_tts.py --mode gpu
 python test_asr.py --mode cpu-offload
 python test_tts.py --mode cpu-offload
 ```
+
+使用方法
+
+# プリセット作成（マイクから録音）
+python voice_clone.py create --name my_voice --text "録音する内容のテキスト"
+
+実行すると：
+1. モデルをロード
+2. 「Press Enter to start recording...」と表示される
+3. Enter を押すと録音開始
+4. もう一度 Enter を押すと録音停止
+5. プリセットを保存（voice_presets/my_voice.pkl）
+
+# 音声合成して再生
+python voice_clone.py synthesize --name my_voice --text "こんにちは"
+
+# 複数テキスト
+python voice_clone.py synthesize --name my_voice --text "一つ目" --text "二つ目"
+
+---
+保存されるファイル
+
+voice_presets/*.pkl のみ（プリセット情報）。音声ファイルは一切使わない。

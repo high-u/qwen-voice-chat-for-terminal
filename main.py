@@ -1,3 +1,4 @@
+import argparse
 import sounddevice as sd
 from engines import AudioRecorder, QwenASR, QwenTTS, QwenLLM
 
@@ -16,14 +17,19 @@ LLM_GENERATE_KWARGS = {
 
 # ASR/TTS parameters
 LANGUAGE = "Japanese"
-TTS_SPEAKER = "ono_anna"
 TTS_LANGUAGE = "Japanese"
+
+
 def main():
+    parser = argparse.ArgumentParser(description="Voice chat with Qwen")
+    parser.add_argument("--voice", required=True, help="Voice preset name")
+    args = parser.parse_args()
+
     print("Loading ASR model...")
     asr = QwenASR()
 
     print("Loading TTS model...")
-    tts = QwenTTS()
+    tts = QwenTTS(voice_name=args.voice)
 
     print("Loading LLM model...")
     llm = QwenLLM()
@@ -69,13 +75,9 @@ def main():
             print(f"[Qwen]: {response_text}")
 
             print("Synthesizing...")
-            audio, sr = tts.synthesize(response_text, speaker=TTS_SPEAKER, language=TTS_LANGUAGE)
+            success, _ = tts.synthesize(response_text, language=TTS_LANGUAGE)
 
-            if audio is not None:
-                print("Playing response...")
-                sd.play(audio, sr)
-                sd.wait()
-            else:
+            if not success:
                 print("Failed to produce audio response.")
 
     except KeyboardInterrupt:
