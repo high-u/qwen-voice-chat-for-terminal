@@ -74,9 +74,16 @@ python main.py --voice my_voice
 ```bash
 # GPU モード
 python test_asr.py --mode gpu
-python test_tts.py --mode gpu
+python test_tts.py --mode gpu --voice my_voice
 
 # CPU オフロードモード
 python test_asr.py --mode cpu-offload
-python test_tts.py --mode cpu-offload
+python test_tts.py --mode cpu-offload --voice my_voice
+```
+
+## TTS 計測
+
+```bash
+python measure_tts.py -t "こんにちは、これはテストです。" -v my_voice --mode gpu
+python measure_tts.py -t "こんにちは、これはテストです。" -v my_voice --mode cpu-offload
 ```
